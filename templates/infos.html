@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+% load static %}
+{% load i18n %}
+
+
+{% block title %}
+Parser - Info
+{% endblock %}
+
+{% block context %}
+    <section class="container-fluid p-0">
+        <div class="container">
+            <div class="cards">
+                {% for work in paginations %}
+                <div class="card p-3">
+                    <a href="{{ work.url }}" target="_blank">
+                            <h4>{{ work.title }}</h4>
+                            <ul>
+                              {% if work.category %}
+                                <li><span class="color_first">{% trans 'Категория' %} : </span>{{ work.category }}</li>
+                                {% endif %}
+                                {% if work.buyer %}
+                                <li><span class="color_first">{% trans 'Покупатель' %} : </span>{{ work.buyer }}</li>
+                                {% endif %}
+                                {% if work.date %}
+                                <li><span class="color_first">{% trans 'Дата' %} : </span>{{ work.date }}</li>
+                                {% endif %}
+                                {% if work.description %}
+                                <li><span class="color_first">{% trans 'Описание' %} : </span>{{ work.description |truncatewords:30 }}</li>
+                                {% endif %}
+                                {% if work.location %}
+                                <li><span class="color_first">{% trans 'Локация' %} : </span>{{ work.location }}</li>
+                                {% endif %}
+                            </ul>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+         <!-- card start -->
+         {% if paginations %}
+         <div class="footer py-5">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                  <li class="page-item">
+                    {% if paginations.has_previous %}
+                    <a class="page-link px-sm-4" href="?page={{ paginations.previous_page_number }}" aria-label="Previous">
+                      <span aria-hidden="true">&laquo;</span>
+                    </a>
+                    {% endif %}
+                  </li>
+                  {% for i in paginations.paginator.page_range %}
+                    {% if paginations.number == i %}
+                    <li class="page-item"><a style="background-color: #2AA29F !important; color: #000;" class="page-link px-sm-4" href="">{{ i }}</a></li>
+                    {% elif i >= paginations.number|add:-3 and i <= paginations.number|add:3 %}
+                    <li class="page-item"><a class="page-link px-sm-4" href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+                  {% endfor %}
+                  <li class="page-item">
+                    {% if paginations.has_next %}
+                    <a class="page-link px-sm-4" href="?page={{ paginations.next_page_number }}" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                    </a>
+                    {% endif %}
+                  </li>
+                </ul>
+              </nav>
+         </div>
+         {% endif %}
+    </section>
+
+  {% endblock%}
+
+    

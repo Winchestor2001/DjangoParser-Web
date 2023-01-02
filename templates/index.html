@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+% load static %}
+{% load i18n %}
+    
+{% block title %}
+Parser
+{% endblock %}
+
+  
+{% block context %}
+  <!-- Modal -->
+  <div class="modal fade" id="modal_1" tabindex="-1" aria-labelledby="modal_1_label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg_second shadow">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modal_1_label">{% trans 'Почта' %}</h1>
+          <button type="button" class="btn bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="fa-solid fa-xmark text-white"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+           <form method="post">
+            {% csrf_token %}
+            <input type="email" name="email" class="form-control bg-transparent color_first" placeholder="Email" required>
+            <button type="submit" class="btn bg_first btn-success px-5 my-3">{% trans 'Отправить' %}</button>
+           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="modal_2" tabindex="-1" aria-labelledby="modal_2_label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg_second shadow">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modal_2_label">{% trans 'Телеграм имя' %}</h1>
+          <button type="button" class="btn bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="fa-solid fa-xmark text-white"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+           <form>
+            <input id="tg_username" type="text" name="tg" class="form-control bg-transparent color_first" placeholder="Username" required>
+            <button onclick="linkBtn();" type="button" class="btn bg_first btn-success px-5 my-3">{% trans 'Отправить' %}</button>
+           </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="modal_3" tabindex="-1" aria-labelledby="modal_3_label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg_second shadow">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modal_3_label">{% trans 'Важно' %}</h1>
+          <button type="button" class="btn bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="fa-solid fa-xmark text-white"></i>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+            <p>{% trans 'Для полного доступа - пройдите регистрацию' %}</p>
+          <button type="button" class="btn btn-success mx-1 px-5 my-3" data-bs-toggle="modal" data-bs-target="#modal_1">{% trans 'Получить доступ' %}</button>
+          <button type="button" class="btn btn-danger px-5 mx-1 my-3" data-bs-dismiss="modal">{% trans 'Закрыть' %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal fade" id="modal_4" tabindex="-1" aria-labelledby="modal_4_label" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content bg_second shadow">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="modal_4_label">{% trans 'Важно' %}</h1>
+          <button type="button" class="btn bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close">
+            <i class="fa-solid fa-xmark text-white"></i>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+            <p>{% trans 'Для полного доступа - пройдите регистрацию' %}</p>
+            <button type="button" class="btn btn-success mx-1 px-5 my-3" data-bs-toggle="modal" data-bs-target="#modal_2">{% trans 'Получить доступ' %}</button>
+            <button type="button" class="btn btn-danger px-5 mx-1 my-3" data-bs-dismiss="modal">{% trans 'Закрыть' %}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modul -->
+    <section class="container-fluid p-0">
+        <!-- check box start -->
+        <div class="container">
+            <form action="{% url 'set_language' %}" method="post" class="row justify-content-center form_lang">
+                {% csrf_token %}
+                <input name="next" type="hidden" value="{{ redirect_to }}">
+                <div class="d-flex justify-content-end align-items-center gap-2 mt-4">
+                    <i class="fa-solid fa-globe color_first"></i>
+                    <select name="language" class="form-select langs" onchange="optionChange();" aria-label="Default select example">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
+                            <option class="lang_opt" value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                                {{ language.name_local | title }}
+                            </option>
+                        {% endfor %}
+                      </select>
+                </div>
+            </form>
+            <form method="post">
+                {% csrf_token %}
+                <center>
+                    <div class="menu col-10 mt-5 py-4 align-items-center px-2">
+                        <div class="row align-items-center h-100">
+                            <div class="col-12 col-lg-4 py-1 text-center">
+                                <div class="form-check d-inline-block">
+                                    <input class="form-check-input" name="rad" type="radio" id="inp_1" value="40" required>
+                                    <label class="form-check-label text-white" for="inp_1">
+                                        {% trans 'Я пользователь группы #1' %}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4 py-1 text-center">
+                                <div class="form-check d-inline-block">
+                                    <input  class="form-check-input unchecked" name="rad" type="radio" id="inp_2" value="65" data-bs-toggle="modal" data-bs-target="#modal_3" required>
+                                    <label class="form-check-label text-white" for="inp_2">
+                                        {% trans 'Я пользователь группы #2' %}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-lg-4 py-1 text-center">
+                                <div class="form-check d-inline-block">
+                                    <input  class="form-check-input unchecked" name="rad" type="radio" id="inp_3"  value="100" data-bs-toggle="modal" data-bs-target="#modal_4" required>
+                                    <label class="form-check-label text-white" for="inp_3">
+                                        {% trans 'Я пользователь группы #3' %}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn bg_first btn-success px-5 my-3">{% trans 'Поиск' %}</button>
+                </center>
+            </form>
+            <div class="map mt-5">
+                {% include 'svg_map.html' %}
+            </div>
+        </div>
+    </section>
+
+{% endblock%}
+
+
+{% block script %}
+<script>
+    function ajaxFunc(value){
+        $.ajax({
+            url: "get_info",
+            type: 'get',
+            data: { item: value },
+            success: function (data) {
+                console.log(data);
+            }
+        });
+    }
+
+
+    function clickBtn(){
+        let form = document.querySelector('.form_block')
+        let radios = form.querySelectorAll('input')
+        radios.forEach(item => {
+            if (item.checked){
+                ajaxFunc(item.value);
+            }
+        })
+    }
+
+    function linkBtn(){
+        let username = document.querySelector('#tg_username').value
+        let lang = document.querySelectorAll('.lang_opt');
+        lang.forEach((item) => {
+            if (item.selected){
+                lang = item.value
+            }
+        })
+        window.open(`https://t.me/DjangoGetParserInfo_Bot?start=${username}___${lang}`, '_blank')
+        window.location.reload();
+    }
+</script>    
+{% endblock %}
