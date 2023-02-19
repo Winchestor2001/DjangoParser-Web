@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
-from .utils import _24freelance_parserThread, CheckWorksThread, freelancermap_parserThread, freelancer_parserThread, flexjobs_parserThread, fl_parserThread
 from .models import Work
 from django.core.paginator import Paginator
 from django.core.mail import send_mail
 from config import settings
+from .utils import fl_parser
 
 
 def send_to_email(domain, email):
@@ -14,6 +14,7 @@ def send_to_email(domain, email):
 
 
 def home(request):
+    fl_parser()
     context = {}
     if request.method == 'POST':
         if 'email' in request.POST:
@@ -23,12 +24,6 @@ def home(request):
             radio = int(request.POST['rad'])
             return redirect('get_info', radio)
     
-    _24freelance_parserThread().start()
-    freelancermap_parserThread().start()
-    freelancer_parserThread().start()
-    flexjobs_parserThread().start()
-    fl_parserThread().start()
-    # CheckWorksThread().start()
     return render(request, 'index.html', context)
 
 

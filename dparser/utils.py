@@ -4,7 +4,6 @@ from bs4 import BeautifulSoup as bs
 from random import randint
 from time import sleep, time
 from fake_useragent import FakeUserAgent
-import threading
 
 from .models import Work
 from datetime import datetime, timedelta
@@ -44,7 +43,7 @@ def _24freelance_parser():
         descriptions = soup.find_all('div', attrs={'class': 'description'})
         dates = soup.find_all('div', attrs={'class': 'date'})
         for title, category, description, date in zip(titles, categories, descriptions, dates):
-            if len(title) > 3 and len(description) > 5:
+            if len(title.text.strip()) > 3:
                 r2 = requests.get(main_url + title.find('a')['href'])
                 soup2 = bs(r2.content, 'html.parser')
                 description = soup2.find('div', attrs={'class': 'description clear'}).text.strip()
@@ -62,34 +61,6 @@ def _24freelance_parser():
 
                 r2.close()
         r.close()
-    
-
-class _24freelance_parserThread(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        
-    def run(self):
-        try:
-            _24freelance_parser()
-        except:
-            pass
-
-        
-class CheckWorksThread(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        
-    def run(self):
-        try:
-            today = datetime.now().strftime("%Y-%m-%d")
-            yestoday = (datetime.strptime(today, "%Y-%m-%d") - timedelta(days=10)).date()
-            works = Work.objects.all()
-            for w in works:
-                date = datetime.strptime(w.date, "%Y-%m-%d").date()
-                if date < yestoday:
-                    w.delete()
-        except:
-            pass
 
 
 def freelancermap_parser():
@@ -102,9 +73,8 @@ def freelancermap_parser():
             dates = soup.find_all(attrs={'class': 'created-date'})
             descriptions = soup.find_all(attrs={'class': 'description'})
             locations = soup.find_all(attrs={'class': 'project-location'})
-
             for title, date, desctiption, location in zip(titles, dates, descriptions, locations):
-                if len(title) > 3 and len(desctiption) > 5:
+                if len(title.text.strip()) > 3 and len(desctiption.text.strip()) > 5:
                     Work.objects.create(
                         platform='freelancermap',
                         title=title.text.strip(),
@@ -119,17 +89,6 @@ def freelancermap_parser():
         r.close()
 
 
-class freelancermap_parserThread(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        
-    def run(self):
-        try:
-            freelancermap_parser()
-        except:
-            pass
-
-
 def freelancer_parser():
     try:
         url = 'https://www.freelancer.com/jobs/?results=100'
@@ -140,7 +99,7 @@ def freelancer_parser():
         descriptions = soup.find_all(attrs={'class': 'JobSearchCard-primary-description'})
 
         for title, date, desctiption in zip(titles, dates, descriptions):
-            if len(title) > 3 and len(desctiption) > 5:
+            if len(title.text.strip()) > 3 and len(desctiption.text.strip()) > 5:
                 Work.objects.create(
                         platform='freelancer',
                         title=title.text.strip(),
@@ -153,17 +112,6 @@ def freelancer_parser():
         r.close()
     except:
         pass
-
-
-class freelancer_parserThread(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        
-    def run(self):
-        try:
-            freelancer_parser()
-        except:
-            pass
 
 
 def flexjobs_parser():
@@ -179,7 +127,7 @@ def flexjobs_parser():
             locations = soup.find_all(attrs={'class': 'job-locations'})
 
             for title, date, desctiption, location in zip(titles, dates, descriptions, locations):
-                if len(title) > 3 and len(desctiption) > 5:
+                if len(title.text.strip()) > 3 and len(desctiption.text.strip()) > 5:
                     Work.objects.create(
                         platform='flexjobs',
                         title=title.text.strip(),
@@ -193,17 +141,6 @@ def flexjobs_parser():
             pass
 
 
-class flexjobs_parserThread(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        
-    def run(self):
-        try:
-            flexjobs_parser()
-        except:
-            pass
-
-
 def fl_parser():
     try:
         url = 'https://www.fl.ru/projects/?kind=5'
@@ -213,7 +150,7 @@ def fl_parser():
         descriptions = soup.find_all(attrs={'class': 'b-post__txt'})
         locations = 'Россия'
         for title, desctiption in zip(titles, descriptions):
-            if len(title) > 3 and len(desctiption) > 5:
+            if len(title.text.strip()) > 3 and len(desctiption.text.strip()) > 5:
                 Work.objects.create(
                         platform='fl',
                         title=title.text.strip(),
@@ -223,17 +160,6 @@ def fl_parser():
                 )
     except Exception as ex:
         pass
-
-
-class fl_parserThread(threading.Thread):
-    def __init__(self):
-        threading.Thread.__init__(self)
-        
-    def run(self):
-        try:
-            fl_parser()
-        except:
-            pass
 
 
 
