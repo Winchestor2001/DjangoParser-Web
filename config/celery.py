@@ -11,14 +11,36 @@ app.config_from_object('django.conf:settings', namespace='CELERY')
 
 app.autodiscover_tasks()
 
+hours = 1
 
 app.conf.beat_schedule = {
-    'parse-web-every-30-minute': {
+    f'parse-web-1-every-{hours}-minute': {
         'task': 'dparser.tasks.paser_web_1',
-        'task': 'dparser.tasks.paser_web_2',
-        'task': 'dparser.tasks.paser_web_3',
-        'task': 'dparser.tasks.paser_web_4',
-        'task': 'dparser.tasks.paser_web_5',
-        'schedule': crontab(minute='*/30'),
+        'schedule': crontab(hour=f'*/{hours}'),
     },
+    f'parse-web-2-every-{hours}-minute': {
+        'task': 'dparser.tasks.paser_web_2',
+        'schedule': crontab(hour=f'*/{hours}'),
+    },
+    f'parse-web-3-every-{hours}-minute': {
+        'task': 'dparser.tasks.paser_web_3',
+        'schedule': crontab(hour=f'*/{hours}'),
+    },
+    f'parse-web-4-every-{hours}-minute': {
+        'task': 'dparser.tasks.paser_web_4',
+        'schedule': crontab(hour=f'*/{hours}'),
+    },
+    f'parse-web-5-every-{hours}-minute': {
+        'task': 'dparser.tasks.paser_web_5',
+        'schedule': crontab(hour=f'*/{hours}'),
+    },
+    f'parse-web-6-every-{hours}-minute': {
+        'task': 'dparser.tasks.paser_web_6',
+        'schedule': crontab(hour=f'*/{hours}'),
+    },
+    f'parse-web-7-every-{hours}-minute': {
+        'task': 'dparser.tasks.paser_web_7',
+        'schedule': crontab(hour=f'*/{hours}'),
+    },
+
 }

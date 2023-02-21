@@ -157,9 +157,62 @@ def fl_parser():
                         description=desctiption.text.strip(),
                         url='https://www.flexjobs.com' + title['href'],
                         location = locations,
+                        work_lang='ru'
                 )
     except Exception as ex:
         pass
 
 
+def weblancer_parser():
+    for page in range(1, 50):
+        try:
+            link = f"https://www.weblancer.net/jobs/?page={page}"
+            r = requests.get(link, headers=agent)
+            soup = bs(r.content, 'html.parser')
+            titles = soup.find_all(attrs={'class': 'title'})
+            dates = soup.find_all(attrs={'class': 'col-sm-4 text-sm-end'})
+            descriptions = soup.find_all(attrs={'class': 'text_field text-inline'})
+            categories = soup.find_all(attrs={'class': 'col-sm-8 text-muted dot_divided text_field d-sm-flex'})
+            for title, date, desctiption, category in zip(titles, dates, descriptions, categories):
+                if len(title.text.strip()) > 3 and len(desctiption.text.strip()) > 5:
+                    url = title.find('a')['href']
+                    Work.objects.create(
+                        platform='weblancer',
+                        title=title.text.strip(),
+                        description=desctiption.text.strip(),
+                        category=category.text.strip(),
+                        url='https://www.weblancer.net' + url,
+                        date=date.text.strip(),
+                        work_lang='en'
+                )
+        except:
+            continue
+        r.close()
 
+
+def theprotocol_parser():
+    for page in range(1, 50):
+        try:
+            link = f"https://www.projects2bid.com/freelance-jobs/page/{page}/"
+            r = requests.get(link, headers=agent)
+            soup = bs(r.content, 'html.parser')
+            titles = soup.find_all(attrs={'class': 'fr-right-details2'})
+            locations = soup.find_all(attrs={'class': 'fr-right-list'})
+            categories = soup.find_all(attrs={'class': 'fr-right-product'})
+            descriptions = soup.find_all(attrs={'class': 'fr-right-index'})
+            for title, description, location, category in zip(titles, descriptions, locations, categories):
+                if len(title.text.strip()) > 3:
+                    url = title.find('a')['href']
+                    description = 'None' if description.text is None else description.text.strip()
+                    Work.objects.create(
+                        platform='projects2bid',
+                        title=title.text.strip(),
+                        description=description,
+                        category=category.text.strip(),
+                        url=url,
+                        location = location.find('ul').find_all('li')[-1].find('span').text.strip(),
+                        work_lang='en'
+                )
+        except Exception as ex:
+            continue
+        r.close()
