@@ -10,6 +10,26 @@ Parser - Info
 {% block context %}
     <section class="container-fluid p-0">
         <div class="container">
+          <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mt-4 color_first">{% trans 'Найдено' %}: {{ total }}</h5>
+          <form action="{% url 'set_language' %}" method="post" class="row justify-content-center form_lang">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ redirect_to }}">
+            <div class="d-flex justify-content-end align-items-center gap-2 mt-4">
+                <i class="fa-solid fa-globe color_first"></i>
+                <select name="language" class="form-select langs" onchange="optionChange();" aria-label="Default select example">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    {% for language in languages %}
+                        <option class="lang_opt" value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                            {{ language.name_local | title }}
+                        </option>
+                    {% endfor %}
+                  </select>
+            </div>
+          </form>
+          </div>
             <div class="cards">
                 {% for work in paginations %}
                 <div class="card p-3">
@@ -23,7 +43,7 @@ Parser - Info
                                 <li><span class="color_first">{% trans 'Покупатель' %} : </span>{{ work.buyer }}</li>
                                 {% endif %}
                                 {% if work.date %}
-                                <li><span class="color_first">{% trans 'Дата' %} : </span>{{ work.date }}</li>
+                                <li><span class="color_first">{% trans 'Дата' %} : </span>{{ work.date | date:'Y.m.d' }}</li>
                                 {% endif %}
                                 {% if work.description %}
                                 <li><span class="color_first">{% trans 'Описание' %} : </span>{{ work.description |truncatewords:30 }}</li>
@@ -68,6 +88,7 @@ Parser - Info
          </div>
          {% endif %}
     </section>
+
 
   {% endblock%}
 

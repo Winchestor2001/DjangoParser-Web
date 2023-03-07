@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-25 20:07+0500\n"
+"POT-Creation-Date: 2023-02-23 22:57+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,6 +29,286 @@ msgstr ""
 #: .\config\settings.py:113
 msgid "German"
 msgstr ""
+
+#: .\env\Lib\site-packages\click\_termui_impl.py:496
+#, python-brace-format
+msgid "{editor}: Editing failed"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\_termui_impl.py:500
+#, python-brace-format
+msgid "{editor}: Editing failed: {e}"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\core.py:1097
+msgid "Aborted!"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\core.py:1282
+#: .\env\Lib\site-packages\click\decorators.py:495
+msgid "Show this message and exit."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\core.py:1313
+#: .\env\Lib\site-packages\click\core.py:1339
+#, python-brace-format
+msgid "(Deprecated) {text}"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\core.py:1357
+msgid "Options"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\core.py:1383
+#, python-brace-format
+msgid "Got unexpected extra argument ({args})"
+msgid_plural "Got unexpected extra arguments ({args})"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\env\Lib\site-packages\click\core.py:1399
+msgid "DeprecationWarning: The command {name!r} is deprecated."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\core.py:1605
+msgid "Commands"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\core.py:1637
+msgid "Missing command."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\core.py:1715
+msgid "No such command {name!r}."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\core.py:2271
+msgid "Value must be an iterable."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\core.py:2291
+#, python-brace-format
+msgid "Takes {nargs} values but 1 was given."
+msgid_plural "Takes {nargs} values but {len} were given."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\env\Lib\site-packages\click\core.py:2734
+#, python-brace-format
+msgid "env var: {var}"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\core.py:2764
+msgid "(dynamic)"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\core.py:2777
+#, python-brace-format
+msgid "default: {default}"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\core.py:2790
+msgid "required"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\decorators.py:400
+#, python-format
+msgid "%(prog)s, version %(version)s"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\decorators.py:464
+msgid "Show the version and exit."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\exceptions.py:43
+#: .\env\Lib\site-packages\click\exceptions.py:79
+#, python-brace-format
+msgid "Error: {message}"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\exceptions.py:71
+#, python-brace-format
+msgid "Try '{command} {option}' for help."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\exceptions.py:120
+#, python-brace-format
+msgid "Invalid value: {message}"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\exceptions.py:122
+#, python-brace-format
+msgid "Invalid value for {param_hint}: {message}"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\exceptions.py:178
+msgid "Missing argument"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\exceptions.py:180
+msgid "Missing option"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\exceptions.py:182
+msgid "Missing parameter"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\exceptions.py:184
+#, python-brace-format
+msgid "Missing {param_type}"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\exceptions.py:191
+#, python-brace-format
+msgid "Missing parameter: {param_name}"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\exceptions.py:211
+#, python-brace-format
+msgid "No such option: {name}"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\exceptions.py:223
+#, python-brace-format
+msgid "Did you mean {possibility}?"
+msgid_plural "(Possible options: {possibilities})"
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\env\Lib\site-packages\click\exceptions.py:261
+msgid "unknown error"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\exceptions.py:268
+msgid "Could not open file {filename!r}: {message}"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\parser.py:231
+msgid "Argument {name!r} takes {nargs} values."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\parser.py:413
+msgid "Option {name!r} does not take a value."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\parser.py:474
+msgid "Option {name!r} requires an argument."
+msgid_plural "Option {name!r} requires {nargs} arguments."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\env\Lib\site-packages\click\shell_completion.py:316
+msgid "Shell completion is not supported for Bash versions older than 4.4."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\shell_completion.py:322
+msgid "Couldn't detect Bash version, shell completion is not supported."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\termui.py:160
+msgid "Repeat for confirmation"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\termui.py:176
+msgid "Error: The value you entered was invalid."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\termui.py:178
+#, python-brace-format
+msgid "Error: {e.message}"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\termui.py:189
+msgid "Error: The two entered values do not match."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\termui.py:245
+msgid "Error: invalid input"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\termui.py:776
+msgid "Press any key to continue..."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:265
+#, python-brace-format
+msgid ""
+"Choose from:\n"
+"\t{choices}"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:297
+msgid "{value!r} is not {choice}."
+msgid_plural "{value!r} is not one of {choices}."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\env\Lib\site-packages\click\types.py:387
+msgid "{value!r} does not match the format {format}."
+msgid_plural "{value!r} does not match the formats {formats}."
+msgstr[0] ""
+msgstr[1] ""
+
+#: .\env\Lib\site-packages\click\types.py:409
+msgid "{value!r} is not a valid {number_type}."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:465
+#, python-brace-format
+msgid "{value} is not in the range {range}."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:606
+msgid "{value!r} is not a valid boolean."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:630
+msgid "{value!r} is not a valid UUID."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:811
+msgid "file"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:813
+msgid "directory"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:815
+msgid "path"
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:861
+msgid "{name} {filename!r} does not exist."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:870
+msgid "{name} {filename!r} is a file."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:878
+#, python-brace-format
+msgid "{name} '{filename}' is a directory."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:887
+msgid "{name} {filename!r} is not readable."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:896
+msgid "{name} {filename!r} is not writable."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:905
+msgid "{name} {filename!r} is not executable."
+msgstr ""
+
+#: .\env\Lib\site-packages\click\types.py:972
+#, python-brace-format
+msgid "{len_type} values are required, but {len_value} was given."
+msgid_plural "{len_type} values are required, but {len_value} were given."
+msgstr[0] ""
+msgstr[1] ""
 
 #: .\env\Lib\site-packages\django\contrib\messages\apps.py:7
 msgid "Messages"
@@ -1222,70 +1502,85 @@ msgstr ""
 msgid "Connect, get help, or contribute"
 msgstr ""
 
-#: .\env\Lib\site-packages\modeltranslation\widgets.py:26
-msgid "None"
+#: .\env\Lib\site-packages\kombu\transport\qpid.py:1309
+#, python-format
+msgid "Attempting to connect to qpid with SASL mechanism %s"
 msgstr ""
 
-#: .\templates\index.html:16
+#: .\env\Lib\site-packages\kombu\transport\qpid.py:1314
+#, python-format
+msgid "Connected to qpid with SASL mechanism %s"
+msgstr ""
+
+#: .\env\Lib\site-packages\kombu\transport\qpid.py:1332
+#, python-format
+msgid "Unable to connect to qpid with SASL mechanism %s"
+msgstr ""
+
+#: .\templates\index.html:17
 msgid "Почта"
 msgstr "Email"
 
-#: .\templates\index.html:25 .\templates\index.html:44
+#: .\templates\index.html:26 .\templates\index.html:45
 msgid "Отправить"
 msgstr "Send"
 
-#: .\templates\index.html:36
+#: .\templates\index.html:37
 msgid "Телеграм имя"
 msgstr "Telegram name"
 
-#: .\templates\index.html:56 .\templates\index.html:75
+#: .\templates\index.html:57 .\templates\index.html:76
 msgid "Важно"
 msgstr "Important"
 
-#: .\templates\index.html:62 .\templates\index.html:81
+#: .\templates\index.html:63 .\templates\index.html:82
 msgid "Для полного доступа - пройдите регистрацию"
 msgstr "For full access - register"
 
-#: .\templates\index.html:63 .\templates\index.html:82
+#: .\templates\index.html:64 .\templates\index.html:83
 msgid "Получить доступ"
 msgstr "Get access"
 
-#: .\templates\index.html:64 .\templates\index.html:83
+#: .\templates\index.html:65 .\templates\index.html:84
 msgid "Закрыть"
 msgstr "Close"
 
-#: .\templates\index.html:118
+#: .\templates\index.html:119
 msgid "Я пользователь группы #1"
 msgstr "I am a member of the group #1"
 
-#: .\templates\index.html:126
+#: .\templates\index.html:127
 msgid "Я пользователь группы #2"
 msgstr "I am a member of the group #2"
 
-#: .\templates\index.html:134
+#: .\templates\index.html:135
 msgid "Я пользователь группы #3"
 msgstr "I am a member of the group #3"
 
-#: .\templates\index.html:140
+#: .\templates\index.html:141
 msgid "Поиск"
 msgstr "Search"
 
-#: .\templates\infos.html:20
+#: .\templates\infos.html:15
+msgid "Найдено"
+msgstr "Found"
+
+#: .\templates\infos.html:41
 msgid "Категория"
 msgstr "Category"
 
-#: .\templates\infos.html:23
+#: .\templates\infos.html:44
 msgid "Покупатель"
 msgstr "Buyer"
 
-#: .\templates\infos.html:26
+#: .\templates\infos.html:47
 msgid "Дата"
 msgstr "Date"
 
-#: .\templates\infos.html:29
+#: .\templates\infos.html:50
 msgid "Описание"
 msgstr "Description"
 
-#: .\templates\infos.html:32
+#: .\templates\infos.html:53
 msgid "Локация"
 msgstr "Location"

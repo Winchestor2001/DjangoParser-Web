@@ -13,16 +13,15 @@ Parser
     <div class="modal-dialog">
       <div class="modal-content bg_second shadow">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="modal_1_label">{% trans 'Почта' %}</h1>
+          <h1 class="modal-title fs-5" id="modal_1_label">{% trans 'Телеграм имя' %}</h1>
           <button type="button" class="btn bg-transparent border-0" data-bs-dismiss="modal" aria-label="Close">
             <i class="fa-solid fa-xmark text-white"></i>
           </button>
         </div>
         <div class="modal-body">
-           <form method="post">
-            {% csrf_token %}
-            <input type="email" name="email" class="form-control bg-transparent color_first" placeholder="Email" required>
-            <button type="submit" class="btn bg_first btn-success px-5 my-3">{% trans 'Отправить' %}</button>
+           <form>
+            <input data-opt="65" id="tg_username2" type="text" name="tg" class="form-control bg-transparent color_first" placeholder="Username" required>
+            <button onclick="linkBtn2();" type="submit" class="btn bg_first btn-success px-5 my-3">{% trans 'Отправить' %}</button>
            </form>
         </div>
       </div>
@@ -40,7 +39,7 @@ Parser
         </div>
         <div class="modal-body">
            <form>
-            <input id="tg_username" type="text" name="tg" class="form-control bg-transparent color_first" placeholder="Username" required>
+            <input data-opt="100" id="tg_username" type="text" name="tg" class="form-control bg-transparent color_first" placeholder="Username" required>
             <button onclick="linkBtn();" type="button" class="btn bg_first btn-success px-5 my-3">{% trans 'Отправить' %}</button>
            </form>
         </div>
@@ -174,14 +173,15 @@ Parser
     }
 
     function linkBtn(){
-        let username = document.querySelector('#tg_username').value
-        let lang = document.querySelectorAll('.lang_opt');
-        lang.forEach((item) => {
-            if (item.selected){
-                lang = item.value
-            }
-        })
-        window.open(`https://t.me/DjangoGetParserInfo_Bot?start=${username}___${lang}`, '_blank')
+        let username = document.querySelector('#tg_username').value.replace(/@/g, '');
+        let opt = document.querySelector('#tg_username').getAttribute('data-opt');
+        window.open(`https://t.me/DjangoGetParserInfo_Bot?start=${username}___${opt}`, '_blank')
+        window.location.reload();
+    }
+    function linkBtn2(){
+        let username = document.querySelector('#tg_username2').value.replace(/@/g, '');
+        let opt = document.querySelector('#tg_username2').getAttribute('data-opt');
+        window.open(`https://t.me/DjangoGetParserInfo_Bot?start=${username}___${opt}`, '_blank')
         window.location.reload();
     }
 </script>    

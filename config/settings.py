@@ -20,6 +20,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -133,11 +134,11 @@ else:
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# pjpuovqgeuudqpfi
+# 3TpAaG3ph?Po
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'parserdjango@gmail.com'
-EMAIL_HOST_PASSWORD = 'pjpuovqgeuudqpfi'
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_HOST_USER = 'dparser@mail.ru'
+EMAIL_HOST_PASSWORD = '3TpAaG3ph?Po'
 EMAIL_PORT = 465
 EMAIL_USE_SSL = True
 
@@ -151,4 +152,6 @@ CELERY_RESULT_BACKEND = 'redis://' + REDIS_HOST + ':' + REDIS_PORT + '/0'
 CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+
 

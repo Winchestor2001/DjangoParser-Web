@@ -7,6 +7,7 @@ from fake_useragent import FakeUserAgent
 
 from .models import Work
 from datetime import datetime, timedelta
+from googletrans import Translator
 
 main_url = 'https://24freelance.pro'
 category_routes = [
@@ -31,7 +32,7 @@ agent = {
 }
     
 
-def _24freelance_parser():
+def dj_24freelance_parser():
     for url in category_routes:
         key = [i for i in url.keys()]
         url = url[key[0]]
@@ -48,15 +49,32 @@ def _24freelance_parser():
                 soup2 = bs(r2.content, 'html.parser')
                 description = soup2.find('div', attrs={'class': 'description clear'}).text.strip()
                 buyer = soup2.find('div', attrs={'class': 'middle'}).find('h2').text.strip()
+                date = datetime.strptime(date['content'], "%Y-%m-%dT%H:%M").strftime("%Y-%m-%d")
                 Work.objects.create(
                     platform='24freelance',
-                    title=title.text.strip(),
-                    description=description,
-                    buyer=buyer,
-                    category=category.text.strip(),
-                    date=date.text.strip(),
+
+                    title_ru=trans(title.text.strip(), 'ru'),
+                    title_en=trans(title.text.strip(), 'en'),
+                    title_de=trans(title.text.strip(), 'de'),
+
+                    description_ru=trans(description, 'ru'),
+                    description_en=trans(description, 'en'),
+                    description_de=trans(description, 'de'),
+
+                    buyer_ru=trans(buyer, 'ru'),
+                    buyer_en=trans(buyer, 'en'),
+                    buyer_de=trans(buyer, 'de'),
+
+                    category_ru=trans(category.text.strip(), 'ru'),
+                    category_en=trans(category.text.strip(), 'en'),
+                    category_de=trans(category.text.strip(), 'de'),
+
+                    date=date,
                     url=main_url + title.find('a')['href'],
-                    location = 'Россия'
+
+                    location_ru = trans('Россия', 'ru'),
+                    location_en = trans('Россия', 'en'),
+                    location_de = trans('Россия', 'de'),
                 )
 
                 r2.close()
@@ -74,50 +92,72 @@ def freelancermap_parser():
             descriptions = soup.find_all(attrs={'class': 'description'})
             locations = soup.find_all(attrs={'class': 'project-location'})
             for title, date, desctiption, location in zip(titles, dates, descriptions, locations):
-                if len(title.text.strip()) > 3 and len(desctiption.text.strip()) > 5:
+                if title.text.strip() and desctiption.text.strip():
+                    date = date.text.strip().replace("Listed:", "").strip()
+                    new_date = datetime.strptime(str(date), "%d.%m.%Y")
                     Work.objects.create(
                         platform='freelancermap',
-                        title=title.text.strip(),
-                        description=desctiption.text.strip(),
-                        date=date.text.strip().replace("Listed:", "").strip(),
+
+                        title_ru=trans(title.text.strip(), 'ru'),
+                        title_en=trans(title.text.strip(), 'en'),
+                        title_de=trans(title.text.strip(), 'de'),
+
+                        description_ru=trans(desctiption.text.strip(), 'ru'),
+                        description_en=trans(desctiption.text.strip(), 'en'),
+                        description_de=trans(desctiption.text.strip(), 'de'),
+
+                        date=new_date,
                         url='https://www.freelancermap.com' + title['href'],
-                        location = location.text.strip(),
-                        work_lang='de'
+
+                        location_ru = trans(location.text.strip(), 'ru'),
+                        location_en = trans(location.text.strip(), 'en'),
+                        location_de = trans(location.text.strip(), 'de'),
                 )
-        except:
+        except Exception as ex:
+            print(ex)
             continue
         r.close()
 
 
 def freelancer_parser():
-    try:
-        url = 'https://www.freelancer.com/jobs/?results=100'
-        r = requests.get(url, headers=agent)
-        soup = bs(r.content, 'html.parser')
-        titles = soup.find_all(attrs={'class': 'JobSearchCard-primary-heading-link'})
-        dates = soup.find_all(attrs={'class': 'JobSearchCard-primary-heading-days'})
-        descriptions = soup.find_all(attrs={'class': 'JobSearchCard-primary-description'})
+    for page in range(1, 50):
+        try:
+            url = f'https://www.freelancer.com/jobs/{page}/?results=100'
+            r = requests.get(url, headers=agent)
+            soup = bs(r.content, 'html.parser')
+            titles = soup.find_all(attrs={'class': 'JobSearchCard-primary-heading-link'})
+            dates = soup.find_all(attrs={'class': 'JobSearchCard-primary-heading-days'})
+            descriptions = soup.find_all(attrs={'class': 'JobSearchCard-primary-description'})
 
-        for title, date, desctiption in zip(titles, dates, descriptions):
-            if len(title.text.strip()) > 3 and len(desctiption.text.strip()) > 5:
-                Work.objects.create(
-                        platform='freelancer',
-                        title=title.text.strip(),
-                        description=desctiption.text.strip(),
-                        date=date.text.strip(),
-                        url='https://www.freelancer.com' + title['href'],
-                        location = 'Australia',
-                        work_lang='en'
-                )
-        r.close()
-    except:
-        pass
+            for title, desctiption in zip(titles, descriptions):
+                if title.text.strip() and desctiption.text.strip():
+                    Work.objects.create(
+                            platform='freelancer',
+
+                            title_ru=trans(title.text.strip(), 'ru'),
+                            title_en=trans(title.text.strip(), 'en'),
+                            title_de=trans(title.text.strip(), 'de'),
+
+                            description_ru=trans(desctiption.text.strip(), 'ru'),
+                            description_en=trans(desctiption.text.strip(), 'en'),
+                            description_de=trans(desctiption.text.strip(), 'de'),
+
+                            date=datetime.now() - timedelta(days=6),
+                            url='https://www.freelancer.com' + title['href'],
+
+                            location_ru = trans('Australia', 'ru'),
+                            location_en = trans('Australia', 'en'),
+                            location_de = trans('Australia', 'de'),
+                    )
+            r.close()
+        except:
+            pass
 
 
 def flexjobs_parser():
     for page in range(1, 35):
         try:
-            url = 'https://www.flexjobs.com/remote-jobs/account-management?page={}'
+            url = f'https://www.flexjobs.com/remote-jobs/account-management?page={page}'
             link = url.format(page)
             r = requests.get(link, headers=agent)
             soup = bs(r.content, 'html.parser')
@@ -127,40 +167,62 @@ def flexjobs_parser():
             locations = soup.find_all(attrs={'class': 'job-locations'})
 
             for title, date, desctiption, location in zip(titles, dates, descriptions, locations):
-                if len(title.text.strip()) > 3 and len(desctiption.text.strip()) > 5:
+                if title.text.strip() and desctiption.text.strip():
                     Work.objects.create(
                         platform='flexjobs',
-                        title=title.text.strip(),
-                        description=desctiption.text.strip(),
-                        date=date.text.strip().replace("Listed:", "").strip(),
+
+                        title_ru=trans(title.text.strip(), 'ru'),
+                        title_en=trans(title.text.strip(), 'en'),
+                        title_de=trans(title.text.strip(), 'de'),
+
+                        description_ru=trans(desctiption.text.strip(), 'ru'),
+                        description_en=trans(desctiption.text.strip(), 'en'),
+                        description_de=trans(desctiption.text.strip(), 'de'),
+
+                        date=flexjobs_date(date.text.strip().replace("Listed:", "").strip()),
                         url='https://www.flexjobs.com' + title['href'],
-                        location = location.text.strip(),
-                        work_lang='en'
+
+                        location_ru = trans(location.text.strip(), 'ru'),
+                        location_en = trans(location.text.strip(), 'en'),
+                        location_de = trans(location.text.strip(), 'de'),
                 )
         except:
             pass
 
 
 def fl_parser():
-    try:
-        url = 'https://www.fl.ru/projects/?kind=5'
-        r = requests.get(url, headers=agent)
-        soup = bs(r.content, 'html.parser')
-        titles = soup.find_all(attrs={'class': 'b-post__link'})
-        descriptions = soup.find_all(attrs={'class': 'b-post__txt'})
-        locations = 'Россия'
-        for title, desctiption in zip(titles, descriptions):
-            if len(title.text.strip()) > 3 and len(desctiption.text.strip()) > 5:
-                Work.objects.create(
-                        platform='fl',
-                        title=title.text.strip(),
-                        description=desctiption.text.strip(),
-                        url='https://www.flexjobs.com' + title['href'],
-                        location = locations,
-                        work_lang='ru'
-                )
-    except Exception as ex:
-        pass
+    for page in range(1, 50):
+        try:
+            url = f'https://www.fl.ru/projects/?page={page}&kind=5'
+            r = requests.get(url, headers=agent)
+            soup = bs(r.content, 'html.parser')
+            titles = soup.find_all(attrs={'class': 'b-post__link'})
+            descriptions = soup.find_all(attrs={'class': 'b-post__txt'})
+            date = datetime.now() - timedelta(days=randint(1, 5))
+            locations = 'Россия'
+            for title, description in zip(titles, descriptions):
+                if title.text.strip() and description.text.strip() != 'Исполнитель определён':
+                    Work.objects.create(
+                            platform='fl',
+
+                            title_ru=trans(title.text.strip(), 'ru'),
+                            title_en=trans(title.text.strip(), 'en'),
+                            title_de=trans(title.text.strip(), 'de'),
+
+                            description_ru=trans(description.text.strip(), 'ru'),
+                            description_en=trans(description.text.strip(), 'en'),
+                            description_de=trans(description.text.strip(), 'de'),
+
+                            url='https://www.flexjobs.com' + title['href'],
+
+                            location_ru = trans(locations, 'ru'),
+                            location_en = trans(locations, 'en'),
+                            location_de = trans(locations, 'de'),
+
+                            date=date
+                    )
+        except Exception as ex:
+            print(ex)
 
 
 def weblancer_parser():
@@ -174,16 +236,25 @@ def weblancer_parser():
             descriptions = soup.find_all(attrs={'class': 'text_field text-inline'})
             categories = soup.find_all(attrs={'class': 'col-sm-8 text-muted dot_divided text_field d-sm-flex'})
             for title, date, desctiption, category in zip(titles, dates, descriptions, categories):
-                if len(title.text.strip()) > 3 and len(desctiption.text.strip()) > 5:
+                if title.text.strip() and desctiption.text.strip() and category:
                     url = title.find('a')['href']
                     Work.objects.create(
                         platform='weblancer',
-                        title=title.text.strip(),
-                        description=desctiption.text.strip(),
-                        category=category.text.strip(),
+
+                        title_ru=trans(title.text.strip(), 'ru'),
+                        title_en=trans(title.text.strip(), 'en'),
+                        title_de=trans(title.text.strip(), 'de'),
+
+                        description_ru=trans(desctiption.text.strip(), 'ru'),
+                        description_en=trans(desctiption.text.strip(), 'en'),
+                        description_de=trans(desctiption.text.strip(), 'de'),
+
+                        category_ru=trans(category.text.strip(), 'ru'),
+                        category_en=trans(category.text.strip(), 'en'),
+                        category_de=trans(category.text.strip(), 'de'),
+
                         url='https://www.weblancer.net' + url,
-                        date=date.text.strip(),
-                        work_lang='en'
+                        date=weblancer_date(date.text.strip()),
                 )
         except:
             continue
@@ -193,7 +264,7 @@ def weblancer_parser():
 def theprotocol_parser():
     for page in range(1, 50):
         try:
-            link = f"https://www.projects2bid.com/freelance-jobs/page/{page}/"
+            link = f"https://www.projects2bid.com/freelance-jobs/page/{page}/?sort=new-old"
             r = requests.get(link, headers=agent)
             soup = bs(r.content, 'html.parser')
             titles = soup.find_all(attrs={'class': 'fr-right-details2'})
@@ -201,18 +272,80 @@ def theprotocol_parser():
             categories = soup.find_all(attrs={'class': 'fr-right-product'})
             descriptions = soup.find_all(attrs={'class': 'fr-right-index'})
             for title, description, location, category in zip(titles, descriptions, locations, categories):
-                if len(title.text.strip()) > 3:
+                description = None if description.text is None else description.text.strip()
+                if len(title.text.strip()) > 3 and description and category.text.strip() and location:
                     url = title.find('a')['href']
-                    description = 'None' if description.text is None else description.text.strip()
+                    loca = location.find('ul').find_all('span')[-1].text.strip()
+                    location = 'None' if 'Received' in loca else loca
                     Work.objects.create(
                         platform='projects2bid',
-                        title=title.text.strip(),
-                        description=description,
-                        category=category.text.strip(),
+
+                        title_ru=trans(title.text.strip(), 'ru'),
+                        title_en=trans(title.text.strip(), 'en'),
+                        title_de=trans(title.text.strip(), 'de'),
+
+                        description_ru=trans(description, 'ru'),
+                        description_en=trans(description, 'en'),
+                        description_de=trans(description, 'de'),
+
+                        category_ru=trans(category.text.strip(), 'ru'),
+                        category_en=trans(category.text.strip(), 'en'),
+                        category_de=trans(category.text.strip(), 'de'),
+
                         url=url,
-                        location = location.find('ul').find_all('li')[-1].find('span').text.strip(),
-                        work_lang='en'
+                        date = datetime.now(),
+
+                        location_ru = trans(location, 'ru'),
+                        location_en = trans(location, 'en'),
+                        location_de = trans(location, 'de'),
                 )
         except Exception as ex:
+            print(ex)
             continue
         r.close()
+
+
+
+def trans(text, lang):
+    translator = Translator()
+    translation = translator.translate(text, dest=lang)
+    return translation.text
+
+
+def weblancer_date(date: str):
+    date_split = date.split()
+    if date_split[1] in ['недели', 'неделю']:
+        new_date = datetime.now() - timedelta(weeks=int(date_split[0]))
+        return new_date
+
+    elif date_split[1] in ['день', 'дня']:
+        new_date = datetime.now() - timedelta(days=int(date_split[0]))
+        return new_date
+
+    elif date_split[1] in ['секунд', 'минуту', 'минуты', 'час', 'часа']:
+        return datetime.now()
+    else:
+        new_date = datetime.now()
+        return new_date
+
+
+def flexjobs_date(date: str):
+    if 'Today' in date:
+        return datetime.now()
+
+    if 'Yesterday' in date:
+        new_date = datetime.now() - timedelta(days=1)
+        return new_date
+
+    date_split = date.split()
+    if date_split[1] == 'days':
+        new_date = datetime.now() - timedelta(days=int(date_split[0]))
+        return new_date
+
+    elif date_split[0] == '30+':
+        new_date = datetime.now() - timedelta(days=30)
+        return new_date
+    else:
+        new_date = datetime.now()
+        return new_date
+
